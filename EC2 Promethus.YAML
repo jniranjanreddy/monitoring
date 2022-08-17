@@ -1,0 +1,39 @@
+Below is the config file for monitoring ec2 nodes in promethus
+
+cat  /etc/prometheus/prometheus.yml
+global:
+  scrape_interval: 1s
+  evaluation_interval: 1s
+
+scrape_configs:
+  - job_name: node
+    ec2_sd_configs:
+    # Discover instances in the same account
+      - port: 9100
+    # Discover instances in account 111111111111
+      - port: 9100
+        role_arn: arn:aws:iam::<Child_Account>:role/cloud-custodian-janitor-task
+    # Continue as many entries as you have other accounts/regions
+      - port: 9100
+        role_arn: arn:aws:iam::<child_Account>:role/cloud-custodian-janitor-task
+        region: us-west-2
+    relabel_configs:
+      - source_labels: [__meta_ec2_tag_Name]
+        target_label: name
+        action: replace
+      - source_labels: [__meta_ec2_owner_id]
+        target_label: AccountID
+        action: replace
+      - source_labels: [__meta_ec2_tag_Createdby]
+        target_label: Owner
+        action: replace
+      - source_labels: [__meta_ec2_instance_type]
+        target_label: InstanceType
+        action: replace
+
+
+  - job_name: grafana
+    scrape_interval: 15s
+    scrape_timeout: 5s
+    static_configs:
+       - targets: ['localhost:3000']

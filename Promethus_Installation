@@ -1,0 +1,127 @@
+
+#Installation of promethus
+#Installation of node exporter
+
+
+
+
+
+
+
+Monitoring in AWS EC2
+Note:- Menttion the below line in prompetus servers
+
+For ec2s:- configration ins
+cat /etc/prometheus/prometheus.yml
+global:
+  scrape_interval: 1s
+  evaluation_interval: 1s
+
+scrape_configs:
+  - job_name: 'node'
+    ec2_sd_configs:
+      - region: us-west-2
+        port: 9100
+
+Once Configuration is done, need to restart prometheus
+
+root@elk:~/prometheus-2.31.0.linux-amd64# cat /etc/systemd/system/prometheus.service
+[Unit]
+Description=Prometheus
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=prometheus
+Group=prometheus
+Restart=always
+Type=simple
+ExecStart=/usr/local/bin/prometheus \
+    --config.file=/etc/prometheus/prometheus.yml \
+    --storage.tsdb.path=/var/lib/prometheus/ \
+    --web.console.templates=/etc/prometheus/consoles \
+    --web.console.libraries=/etc/prometheus/console_libraries \
+#    --web.listen-address=0.0.0.0:9090
+    --web.enable-lifecycle
+
+[Install]
+WantedBy=multi-user.target
+
+
+curl -s -XPOST localhost:9090/-/reload
+
+#Node_Exporter Client
+
+In all the targets(clients) ,Install the node exporter
+Please find below the steps.
+
+useradd --no-create-home --shell /bin/false node_exporter
+cd ~
+curl -LO https://github.com/prometheus/node_exporter/releases/download/v0.15.1/node_exporter-0.15.1.linux-amd64.tar.gz
+
+tar xvf node_exporter-0.15.1.linux-amd64.tar.gz
+
+sudo cp node_exporter-0.15.1.linux-amd64/node_exporter /usr/local/bin
+sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter
+
+rm -rf node_exporter-0.15.1.linux-amd64.tar.gz node_exporter-0.15.1.linux-amd64
+
+sudo vim  /etc/systemd/system/node_exporter.service
+
+[Unit]
+Description=Node Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+ExecStart=/usr/local/bin/node_exporter 
+
+[Install]
+WantedBy=multi-user.target
+
+sudo systemctl daemon-reload
+sudo systemctl start node_exporter
+sudo systemctl status node_exporter
+sudo systemctl enable node_exporter
+
+
+
+
+Note:- if you have multi Account want to get all the nodes in all the accounts,Then you need a assume role in all the child accounts which is having ec2 read access to pull the
+data.-
+
+
+Here the the configration of promethus.yaml
+
+##cat /etc/prometheus/prometheus.yml
+global:
+  scrape_interval: 1s
+  evaluation_interval: 1s
+
+scrape_configs:
+  - job_name: node
+    ec2_sd_configs:
+    # Discover instances in the same account
+      - port: 9100
+    # Discover instances in account 111111111111
+      - port: 9100
+        role_arn: arn:aws:iam::<CHILD-ACCOUNT_NO>:role/cloud-custodian-janitor-task
+    # Continue as many entries as you have other accounts/regions
+      - port: 9100
+        role_arn: arn:aws:iam::<CHILD-ACCOUNT-NO>:role/cloud-custodian-janitor-task
+        region: us-west-2
+        
+  
+ 
+ #To check the syntax of the yaml file 
+  /usr/local/bin/promtool check config /etc/prometheus/prometheus.yml
+Checking /etc/prometheus/prometheus.yml
+  SUCCESS: 0 rule files found
+  
+  
+
+
+

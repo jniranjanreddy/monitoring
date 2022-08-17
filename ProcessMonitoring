@@ -1,0 +1,37 @@
+Process-monitoring
+--------------------------
+wget https://github.com/ncabatoff/process-exporter/releases/download/v0.7.5/process-exporter-0.7.5.linux-amd64.tar.gz
+tar -xvzf process-exporter-0.7.5.linux-amd64.tar.gz	
+cp process-exporter-0.7.5.linux-amd64/process-exporter /usr/local/bin
+
+mkdir  /etc/process-exporter
+vim /etc/process-exporter/process-monit.yaml
+
+
+process_names:
+  - comm:
+    - chromium-browse
+    - bash
+    - prometheus
+    - gvim
+
+Add a job in  in promethus.yaml
+-------->>------------------
+- job_name: Process_exporter
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['10.80.XXX.XX:9256']
+-------------->>--------------------
+
+ /usr/local/bin/process-exporter -config.path /etc/process-exporter/proc-config.yaml
+
+
+ netstat -ntlp | grep process
+tcp6       0      0 :::9256                 :::*                    LISTEN      17716/process-expor
+
+To view the data 
+http://<proces_host>:9256/metrics
+
+
+#In promethus, new process mornitoring will be created.
+
