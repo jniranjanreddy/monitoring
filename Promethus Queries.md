@@ -1,3 +1,15 @@
+## mathers
+```
+Equality matchers  - ex process_cpu_seconds_total{job="node_exporter"}
+
+Negative Equality Matcher - Ex: process_cpu_seconds_total{job!="node_exporter"}
+
+Regular Expression - Ex: prometheus_http_requests_total{'handler=~"/api.*"'}
+
+Negative Reqular Expression Ex:  prometheus_http_requests_total{'handler!~"/api.*"'}
+```
+
+
 
 scrape_duration_seconds :- will get all the data that is scraped.
 
