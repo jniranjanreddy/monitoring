@@ -1,5 +1,7 @@
 
 ## How to install Splunk
+## more info: https://docs.splunk.com/Splexicon
+### SPL - Search Processing Language
 ```
 1. download splunk
 2. untar and copy splunk folder to /opt
@@ -96,4 +98,10 @@ Forwarders - Collecting the data and forwarding it to other Splunk Instances.
 Indexes - Data is stored
 Search Heads - Analyze, Visualize and report the Data
 ```
+## Enable boot start
+```
+root@splunk:/opt# ./splunk/bin/splunk enable boot-start
+Init script installed at /etc/init.d/splunk.
+Init script is configured to run at boot.
 
+```
