@@ -2,6 +2,18 @@
 ## How to install Splunk
 ## more info: https://docs.splunk.com/Splexicon
 ### SPL - Search Processing Language
+
+```
+root@splunk:~# cat /opt/splunk/etc/apps/search/local/inputs.conf
+[monitor:///var/log/auth.log]
+disabled = false
+host = splunk.jnrlabs.com
+sourcetype = OS-Auth
+
+```
+
+
+
 ```
 1. download splunk
 2. untar and copy splunk folder to /opt
