@@ -117,3 +117,15 @@ Init script installed at /etc/init.d/splunk.
 Init script is configured to run at boot.
 
 ```
+## Splunk fundamentals.
+```
+1. Events
+2. Search
+3. Repoprt
+4. Dashboard
+5. SPL - Splunk Search Processing Language.
+6. SourceType
+7 Index
+8. Field Extractions
+9. Lookup Tables
+```
