@@ -129,3 +129,21 @@ Init script is configured to run at boot.
 8. Field Extractions
 9. Lookup Tables
 ```
+# Splunk Infrastructure/Servers
+## Indexer
+## Search Head
+
+
+
+```
+root@splunk:/opt/splunk/bin# ./splunk btool inputs list --debug | grep -i auth
+/opt/splunk/etc/system/default/inputs.conf                             [blacklist:/opt/splunk/etc/auth]
+/opt/splunk/etc/apps/search/local/inputs.conf                          [monitor:///var/log/auth.log]
+/opt/splunk/etc/apps/search/local/inputs.conf                          sourcetype = OS-Auth
+/opt/splunk/etc/apps/python_upgrade_readiness_app/default/inputs.conf  passAuth = splunk-system-user
+/opt/splunk/etc/apps/python_upgrade_readiness_app/default/inputs.conf  passAuth = splunk-system-user
+/opt/splunk/etc/apps/python_upgrade_readiness_app/default/inputs.conf  passAuth = splunk-system-user
+
+
+
+```
