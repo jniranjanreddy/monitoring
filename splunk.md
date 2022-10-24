@@ -132,6 +132,12 @@ Init script is configured to run at boot.
 # Splunk Infrastructure/Servers
 ## Indexer
 ## Search Head
+## Forwarder
+## Universal Forwarder
+## Syslog Receiver
+## Deployment server
+## License Server
+## Splunk Clustering ( Indexer Search Head Multisite)
 
 
 
@@ -143,7 +149,4 @@ root@splunk:/opt/splunk/bin# ./splunk btool inputs list --debug | grep -i auth
 /opt/splunk/etc/apps/python_upgrade_readiness_app/default/inputs.conf  passAuth = splunk-system-user
 /opt/splunk/etc/apps/python_upgrade_readiness_app/default/inputs.conf  passAuth = splunk-system-user
 /opt/splunk/etc/apps/python_upgrade_readiness_app/default/inputs.conf  passAuth = splunk-system-user
-
-
-
 ```
