@@ -1,5 +1,11 @@
 ## Below Prometheus queries are for rancher Grafana.
 
+## Count of Nodes
+```
+sum by (namespace) (kube_pod_status_ready{condition="false"})
+```
+
+
 ## list namespaces and pods insdied it
 ```
 sum by(namespace)(kube_pod_info)
